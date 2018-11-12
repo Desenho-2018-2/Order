@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  web:
+    container_name: orders-api
+    build:
+      context: .
+      dockerfile: dockers/dev/Dockerfile
+    command: python3 manage.py runserver 0.0.0.0:8080
+    volumes:
+      - .:/orders-api
+    ports:
+      - 8081:8080
