@@ -19,5 +19,5 @@ from waiter import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('tables/', views.TableView)
+    path('tables/', views.TableView.as_view())
 ]
