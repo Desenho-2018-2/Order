@@ -1,3 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
+class Table(models.Model):
+    number_of_seats = models.IntegerField()
+    is_occupied = models.BooleanField()
