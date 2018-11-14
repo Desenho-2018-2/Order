@@ -1,13 +1,12 @@
 version: '3'
 
 services:
-  web:
-    container_name: orders-api
+  dev:
     build:
-      context: .
-      dockerfile: dockers/dev/Dockerfile
-    command: python3 manage.py runserver 0.0.0.0:8080
+      context: . 
+      dockerfile: dockers/dev/Dockerfile 
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8080"
     volumes:
-      - .:/orders-api
+        - ./orders/:/home
     ports:
-      - 8081:8080
+        - 8080:8080

@@ -1,10 +1,14 @@
-FROM python:3.7.1
+FROM alpine:3.7
 
-WORKDIR /orders-api
+RUN apk add --update \  
+        python3-dev \
+        py-pip \
+        bash 
 
-COPY dockers/dev/requirements.txt ./
-RUN pip3 install --upgrade pip
+WORKDIR /home
+
+## add requirements.txt file
+ADD dockers/dev/requirements.txt .
+
+## install requirements
 RUN pip3 install -r requirements.txt
-COPY . .
-
-EXPOSE 8080
