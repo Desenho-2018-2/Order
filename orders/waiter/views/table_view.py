@@ -10,7 +10,7 @@ class TableView(APIView):
     """
     def get(self, request, format=None):
         """
-            Returns all the Table objects
+            Returns all Table objects
         """
         tables = Table.objects.all()
         serialized_tables = TableSerializer(tables, many=True)
