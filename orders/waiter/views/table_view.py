@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from waiter.models import Table
+from waiter.serializers import TableSerializer
 
 
 class TableView(APIView):
@@ -12,4 +13,5 @@ class TableView(APIView):
             Returns all the Table objects
         """
         tables = Table.objects.all()
-        return Response(tables)
+        serialized_tables = TableSerializer(tables, many=True)
+        return Response(serialized_tables.data)
