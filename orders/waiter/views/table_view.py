@@ -1,5 +1,7 @@
 from django.http import Http404
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waiter.models import Table
@@ -10,6 +12,9 @@ class TableView(APIView):
     """
         View methods for the Table object
     """
+
+    permission_classes = (AllowAny,)
+
     def get(self, request, format=None):
         """
             Returns all Table objects
@@ -17,6 +22,14 @@ class TableView(APIView):
         tables = Table.objects.all()
         serialized_tables = TableSerializer(tables, many=True)
         return Response(serialized_tables.data)
+
+    @csrf_exempt
+    def post(self, request, format=None):
+        table_serializer = TableSerializer(data=request.data)
+
+        if table_serializer.is_valid():
+            table_serializer.save()
+            return Response(table_serializer.data)
 
 
 @api_view(['GET'])

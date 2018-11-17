@@ -1,10 +1,12 @@
 from django.contrib import admin
 from django.urls import path
 from waiter import views
+from django.views.decorators.csrf import csrf_exempt
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('tables/', views.TableView.as_view()),
+    path('tables/', csrf_exempt(views.TableView.as_view())),
     path('table/<int:pk>', views.table_view.get_table),
     path('sessions/', views.SessionView.as_view()),
     path('session/<int:pk>', views.session_view.get_session),
