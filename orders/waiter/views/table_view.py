@@ -1,6 +1,5 @@
 from django.http import Http404
 from rest_framework.decorators import api_view
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waiter.models import Table
@@ -12,7 +11,6 @@ class TableView(APIView):
         View methods for the Table object
     """
     authentication_classes = []
-    permission_classes = (AllowAny,)
 
     def get(self, request, format=None):
         """
@@ -23,6 +21,9 @@ class TableView(APIView):
         return Response(serialized_tables.data)
 
     def post(self, request, format=None):
+        """
+            Inserts a table in the database
+        """
         table_serializer = TableSerializer(data=request.data)
 
         if table_serializer.is_valid():

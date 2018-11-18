@@ -10,13 +10,27 @@ class OrderPadView(APIView):
     """
         View methods for the OrderPad object
     """
+
+    authentication_classes = []
+
     def get(self, request, format=None):
         """
-            Return all OrderPad objects
+            Returns all OrderPad objects
         """
         orderpads = OrderPad.objects.all()
         serialized_orderpads = OrderPadSerializer(orderpads, many=True)
         return Response(serialized_orderpads.data)
+
+    def post(self, request, format=None):
+        """
+            Inserts an orderpad in the database
+        """
+        orderpad_serializer = OrderPadSerializer(data=request.data)
+
+        if orderpad_serializer.is_valid():
+            orderpad_serializer.save()
+
+            return Response(orderpad_serializer.data)
 
 
 @api_view(['GET'])

@@ -10,6 +10,9 @@ class SessionView(APIView):
     """
         View methods for the Session object
     """
+
+    authentication_classes = []
+
     def get(self, request, format=None):
         """
             Returns all Session objects
@@ -17,6 +20,16 @@ class SessionView(APIView):
         sessions = Session.objects.all()
         serialized_sessions = SessionSerializer(sessions, many=True)
         return Response(serialized_sessions.data)
+
+    def post(self, request, format=None):
+        """
+            Inserts a session in the database
+        """
+        session_serializer = SessionSerializer(data=request.data)
+
+        if session_serializer.is_valid():
+            session_serializer.save()
+            return Response(session_serializer.data)
 
 
 @api_view(['GET'])
