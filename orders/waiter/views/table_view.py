@@ -1,5 +1,4 @@
 from django.http import Http404
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -12,7 +11,7 @@ class TableView(APIView):
     """
         View methods for the Table object
     """
-
+    authentication_classes = []
     permission_classes = (AllowAny,)
 
     def get(self, request, format=None):
@@ -23,7 +22,6 @@ class TableView(APIView):
         serialized_tables = TableSerializer(tables, many=True)
         return Response(serialized_tables.data)
 
-    @csrf_exempt
     def post(self, request, format=None):
         table_serializer = TableSerializer(data=request.data)
 
