@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('tables/', csrf_exempt(views.TableView.as_view())),
-    path('table/<int:pk>', views.table_view.get_table),
+    path('table/<int:pk>', csrf_exempt(views.TableDetailView.as_view())),
     path('sessions/', views.SessionView.as_view()),
     path('session/<int:pk>', views.session_view.get_session),
     path('orderpads/', views.OrderPadView.as_view()),
