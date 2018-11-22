@@ -1,5 +1,4 @@
 from django.http import Http404
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waiter.models import Session
@@ -32,15 +31,36 @@ class SessionView(APIView):
             return Response(session_serializer.data)
 
 
-@api_view(['GET'])
-def get_session(request, pk, format=None):
+class SessionDetailView(APIView):
     """
-        Returns a specific session by its id
+        View methods for a Session object
     """
-    try:
-        session = Session.objects.get(pk=pk)
+    authentication_classes = []
+
+    def get_object(self, pk):
+        try:
+            return Session.objects.get(pk=pk)
+        except Session.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        """
+            Returns a specific session by its id
+        """
+        session = self.get_object(pk)
         serialized_session = SessionSerializer(session)
 
         return Response(serialized_session.data)
-    except:
-        raise Http404
+
+    def put(self, request, pk, format=None):
+        """
+            Updates a session by its id
+        """
+        session = self.get_object(pk)
+        session_serializer = SessionSerializer(session, data=request.data)
+
+        if session_serializer.is_valid():
+            session_serializer.save()
+            return Response(session_serializer.data)
+
+        return Response(session_serializer.errors)

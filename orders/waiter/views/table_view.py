@@ -34,7 +34,7 @@ class TableView(APIView):
 
 class TableDetailView(APIView):
     """
-        View methods for an Table object
+        View methods for a Table object
     """
     authentication_classes = []
 

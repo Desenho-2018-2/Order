@@ -1,5 +1,4 @@
 from django.http import Http404
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from waiter.models import OrderPad
@@ -33,17 +32,37 @@ class OrderPadView(APIView):
             return Response(orderpad_serializer.data)
 
 
-@api_view(['GET'])
-def get_orderpad(request, pk, format=None):
+class OrderPadDetailView(APIView):
     """
-        Returns a specific OrderPad by its id
+        View methods for an OrderPad object
     """
+    authentication_classes = []
 
-    try:
-        orderpad = OrderPad.objects.get(pk=pk)
+    def get_object(self, pk):
+        try:
+            return OrderPad.objects.get(pk=pk)
+        except OrderPad.DoesNotExist:
+            raise Http404
 
+    def get(self, request, pk, format=None):
+        """
+            Returns a specific OrderPad by its id
+        """
+        orderpad = self.get_object(pk)
         serialized_orderpad = OrderPadSerializer(orderpad)
 
         return Response(serialized_orderpad.data)
-    except:
-        raise Http404
+
+    def put(self, request, pk, format=None):
+        """
+            Updates an orderpad by its id
+        """
+        orderpad = self.get_object(pk)
+        orderpad_serializer = OrderPadSerializer(orderpad, data=request.data)
+
+        if orderpad_serializer.is_valid():
+            orderpad_serializer.save()
+
+            return Response(orderpad_serializer.data)
+
+        return Response(orderpad_serializer.errors)

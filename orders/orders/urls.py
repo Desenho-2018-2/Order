@@ -9,7 +9,7 @@ urlpatterns = [
     path('tables/', csrf_exempt(views.TableView.as_view())),
     path('table/<int:pk>', csrf_exempt(views.TableDetailView.as_view())),
     path('sessions/', views.SessionView.as_view()),
-    path('session/<int:pk>', views.session_view.get_session),
+    path('session/<int:pk>', csrf_exempt(views.SessionDetailView.as_view())),
     path('orderpads/', views.OrderPadView.as_view()),
-    path('orderpad/<int:pk>', views.orderpad_view.get_orderpad)
+    path('orderpad/<int:pk>', csrf_exempt(views.SessionDetailView.as_view())) 
 ]
