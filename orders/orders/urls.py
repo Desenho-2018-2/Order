@@ -11,5 +11,5 @@ urlpatterns = [
     path('session/<int:pk>', csrf_exempt(views.SessionDetailView.as_view())),
     path('orderpads/', views.OrderPadView.as_view()),
     path('orderpad/<int:pk>', csrf_exempt(views.SessionDetailView.as_view())),
-    path('notify/', views.OrderView.as_view()),
+    path('notify/', views.NotifyOrder.as_view()),
 ]
